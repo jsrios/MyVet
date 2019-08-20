@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -19,34 +20,27 @@ namespace MyVet.Web.Data.Entities
         [MaxLength(50, ErrorMessage = "The {0} field can not have more than {1} characters.")]
         public string Race { get; set; }
 
-       
-
         [Display(Name = "Born")]
         [Required(ErrorMessage = "The field {0} is mandatory.")]
-        [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         public DateTime Born { get; set; }
 
         public string Remarks { get; set; }
 
-        public ICollection<History> Histories { get; set; }
-
         //TODO: replace the correct URL for the image
         public string ImageFullPath => string.IsNullOrEmpty(ImageUrl)
             ? null
-            : $"https://TDB.azurewebsites.net{ImageUrl.Substring(1)}";
+            : $"https://TBD.azurewebsites.net{ImageUrl.Substring(1)}";
 
-        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}")]
         [Display(Name = "Born")]
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}")]
         public DateTime BornLocal => Born.ToLocalTime();
 
-      
-        public Owner Owner { get; set; }  // Relaciones
+        public PetType PetType { get; set; }
 
-        public PetType PetType { get; set; }// Relaciones
-        //TODO no me dejo hacer esta relacion
+        public Owner Owner { get; set; }
 
-        //public ICollection<History> Histories { get; set; }
+        public ICollection<History> Histories { get; set; }
 
         public ICollection<Agenda> Agendas { get; set; }
     }

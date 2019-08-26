@@ -11,7 +11,6 @@ namespace MyVet.Web.Helpers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<User> _signInManager;
 
-
         public UserHelper(
             UserManager<User> userManager,
             RoleManager<IdentityRole> roleManager,
@@ -46,8 +45,7 @@ namespace MyVet.Web.Helpers
 
         public async Task<User> GetUserByEmailAsync(string email)
         {
-            var user = await _userManager.FindByEmailAsync(email);
-            return user;
+            return await _userManager.FindByEmailAsync(email);
         }
 
         public async Task<bool> IsUserInRoleAsync(User user, string roleName)
@@ -55,7 +53,6 @@ namespace MyVet.Web.Helpers
             return await _userManager.IsInRoleAsync(user, roleName);
         }
 
-       
         public async Task<SignInResult> LoginAsync(LoginViewModel model)
         {
             return await _signInManager.PasswordSignInAsync(
@@ -70,6 +67,21 @@ namespace MyVet.Web.Helpers
             await _signInManager.SignOutAsync();
         }
 
-    }
+        public async Task<bool> DeleteUserAsync(string email)
+        {
+            var user = await GetUserByEmailAsync(email);
+            if (user == null)
+            {
+                return true;
+            }
 
+            var response = await _userManager.DeleteAsync(user);
+            return response.Succeeded;
+        }
+
+        public async Task<IdentityResult> UpdateUserAsync(User user)
+        {
+            return await _userManager.UpdateAsync(user);
+        }
+    }
 }
